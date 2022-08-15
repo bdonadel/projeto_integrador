@@ -16,7 +16,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.*;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 @Service
@@ -62,6 +64,7 @@ public class PurchaseOrderService implements IPurchaseOrderService {
         PurchaseOrder foundOrder = findPurchaseOrder(purchaseOrderId, buyerId);
 
         foundOrder.setOrderStatus("Closed");
+        foundOrder.setUpdateDateTime(LocalDateTime.now());
         purchaseOrderRepository.save(foundOrder);
 
         return new PurchaseOrderResponseDto(foundOrder.getPurchaseId(), foundOrder.getBatchPurchaseOrders().stream()
@@ -78,7 +81,10 @@ public class PurchaseOrderService implements IPurchaseOrderService {
     @Transactional
     @Override
     public void dropProducts(long purchaseOrderId, BatchPurchaseOrderRequestDto batchDto, long buyerId) {
-        batchPurchaseOrderRepository.delete(returnToStock(findBatchPurchaseOrder(findPurchaseOrder(purchaseOrderId, buyerId), findBatchById(batchDto.getBatchNumber()))));
+        PurchaseOrder purchaseOrder = findPurchaseOrder(purchaseOrderId, buyerId);
+        batchPurchaseOrderRepository.delete(returnToStock(findBatchPurchaseOrder(purchaseOrder, findBatchById(batchDto.getBatchNumber()))));
+        purchaseOrder.setUpdateDateTime(LocalDateTime.now());
+        purchaseOrderRepository.save(purchaseOrder);
     }
 
     /**
@@ -97,6 +103,22 @@ public class PurchaseOrderService implements IPurchaseOrderService {
             throw new NotFoundException("Purchase");
         }
         return mapListBatchPurchaseToListDto(purchaseOrder.getBatchPurchaseOrders());
+    }
+
+    /**
+     *  Método que deleta os carrinhos (PurchaseOrder) abandonados há mais de 2 horas.
+     */
+    @Transactional
+    public void dropAbandonedPurchase(long dropoutTimeInMinutes) {
+        List<PurchaseOrder> abandonedPurchaseOrders = purchaseOrderRepository
+                .findByOrderStatusAndUpdateDateTimeBefore("Opened", LocalDateTime.now().minusMinutes(dropoutTimeInMinutes));
+        List<BatchPurchaseOrder> batchPurchaseOrders = abandonedPurchaseOrders.stream()
+                    .map(PurchaseOrder::getBatchPurchaseOrders)
+                .collect(ArrayList::new, List::addAll, List::addAll);
+
+        batchPurchaseOrders.forEach(batch -> returnToStock(batch));
+        batchPurchaseOrderRepository.deleteAll(batchPurchaseOrders);
+        purchaseOrderRepository.deleteAll(abandonedPurchaseOrders);
     }
 
     /**
@@ -124,6 +146,7 @@ public class PurchaseOrderService implements IPurchaseOrderService {
             purchaseOrderRepository.save(purchaseOrder);
         }
         purchaseOrder.setOrderStatus(orderStatus);
+        purchaseOrder.setUpdateDateTime(LocalDateTime.now());
         return purchaseOrder;
     }
 

@@ -12,4 +12,5 @@ public interface IPurchaseOrderService {
     PurchaseOrderResponseDto update (long purchaseOrderId, long buyerId);
     void dropProducts(long purchaseOrderId, BatchPurchaseOrderRequestDto batchDto, long buyerId);
     List<BatchBuyerResponseDto> getBatches(long buyerId, long purchaseOrderId);
+    void dropAbandonedPurchase(long dropoutTimeInMinutes);
 }
