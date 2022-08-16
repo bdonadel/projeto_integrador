@@ -5,10 +5,7 @@ import com.mercadolibre.bootcamp.projeto_integrador.dto.BatchPurchaseOrderReques
 import com.mercadolibre.bootcamp.projeto_integrador.dto.PurchaseOrderRequestDto;
 import com.mercadolibre.bootcamp.projeto_integrador.dto.PurchaseOrderResponseDto;
 import com.mercadolibre.bootcamp.projeto_integrador.enums.OrderStatus;
-import com.mercadolibre.bootcamp.projeto_integrador.exceptions.BatchOutOfStockException;
-import com.mercadolibre.bootcamp.projeto_integrador.exceptions.NotFoundException;
-import com.mercadolibre.bootcamp.projeto_integrador.exceptions.PurchaseOrderAlreadyClosedException;
-import com.mercadolibre.bootcamp.projeto_integrador.exceptions.UnauthorizedBuyerException;
+import com.mercadolibre.bootcamp.projeto_integrador.exceptions.*;
 import com.mercadolibre.bootcamp.projeto_integrador.model.Batch;
 import com.mercadolibre.bootcamp.projeto_integrador.model.BatchPurchaseOrder;
 import com.mercadolibre.bootcamp.projeto_integrador.model.Buyer;
@@ -58,7 +55,8 @@ public class PurchaseOrderService implements IPurchaseOrderService {
 
         purchaseOrder = getPurchaseInStock(request.getBatch(), purchaseOrder);
         return new PurchaseOrderResponseDto(purchaseOrder.getPurchaseId(),
-                mapListBatchPurchaseToListDto(purchaseOrder.getBatchPurchaseOrders()), sumTotalPrice(purchaseOrder));
+                purchaseOrder.getOrderStatus(), sumTotalPrice(purchaseOrder),
+                mapListBatchPurchaseToListDto(purchaseOrder.getBatchPurchaseOrders()));
     }
 
     /**
@@ -72,15 +70,19 @@ public class PurchaseOrderService implements IPurchaseOrderService {
     public PurchaseOrderResponseDto update(long purchaseOrderId, long buyerId) {
         PurchaseOrder foundOrder = findPurchaseOrder(purchaseOrderId, buyerId);
 
-        foundOrder.setOrderStatus(OrderStatus.CLOSED);
+        int initialQuantityOfBatchPurchases = foundOrder.getBatchPurchaseOrders().size();
+        foundOrder = updateStockToPurchase(foundOrder);
+        int currentQuantityOfBatchPurchases = foundOrder.getBatchPurchaseOrders().size();
+
+        if (currentQuantityOfBatchPurchases == initialQuantityOfBatchPurchases) {
+            foundOrder.setOrderStatus(OrderStatus.CLOSED);
+        }
         foundOrder.setUpdateDateTime(LocalDateTime.now());
         purchaseOrderRepository.save(foundOrder);
 
         return new PurchaseOrderResponseDto(foundOrder.getPurchaseId(),
-                mapListBatchPurchaseToListDto(foundOrder.getBatchPurchaseOrders()),
-                foundOrder.getBatchPurchaseOrders().stream()
-                        .map(batchPurchaseOrder -> batchPurchaseOrder.getUnitPrice().multiply(new BigDecimal(batchPurchaseOrder.getQuantity())))
-                        .reduce(BigDecimal.ZERO, BigDecimal::add));
+                foundOrder.getOrderStatus(), sumTotalPrice(foundOrder),
+                mapListBatchPurchaseToListDto(foundOrder.getBatchPurchaseOrders()));
     }
 
     /**
@@ -196,6 +198,8 @@ public class PurchaseOrderService implements IPurchaseOrderService {
         List<BatchPurchaseOrder> batchPurchasesReserved = purchase.getBatchPurchaseOrders().stream()
                 .filter(batchPurchase -> reserveBatch(batchPurchase.getBatch().getBatchNumber(), batchPurchase.getQuantity()))
                 .collect(Collectors.toList());
+        deleteOutOfStockBatchPurchase(purchase.getBatchPurchaseOrders(), batchPurchasesReserved);
+
         purchase.setBatchPurchaseOrders(batchPurchasesReserved);
         purchase.setReserved(true);
         return purchase;
@@ -210,6 +214,13 @@ public class PurchaseOrderService implements IPurchaseOrderService {
         }
         batchFound.get().setCurrentQuantity(batchFound.get().getCurrentQuantity() - quantity);
         return true;
+    }
+
+    private void deleteOutOfStockBatchPurchase(List<BatchPurchaseOrder> allBatchPurchases, List<BatchPurchaseOrder> batchPurchasesReserved) {
+        List<BatchPurchaseOrder> batchPurchases = allBatchPurchases.stream()
+                .filter(bp -> !batchPurchasesReserved.contains(bp))
+                .collect(Collectors.toList());
+        batchPurchaseOrderRepository.deleteAll(batchPurchases);
     }
 
     /**

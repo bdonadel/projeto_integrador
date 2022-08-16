@@ -1,5 +1,6 @@
 package com.mercadolibre.bootcamp.projeto_integrador.dto;
 
+import com.mercadolibre.bootcamp.projeto_integrador.enums.OrderStatus;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -12,6 +13,7 @@ import java.util.List;
 @AllArgsConstructor
 public class PurchaseOrderResponseDto {
     private long purchaseOrderId;
-    private List<BatchBuyerResponseDto> batches;
+    private OrderStatus orderStatus;
     private BigDecimal totalPrice;
+    private List<BatchBuyerResponseDto> batches;
 }
