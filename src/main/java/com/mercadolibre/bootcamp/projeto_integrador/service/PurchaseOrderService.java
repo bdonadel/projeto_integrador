@@ -18,7 +18,6 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.*;
-import java.util.function.Function;
 import java.util.stream.Collectors;
 
 @Service
@@ -109,6 +108,7 @@ public class PurchaseOrderService implements IPurchaseOrderService {
      *  Método que deleta os carrinhos (PurchaseOrder) abandonados há mais de 2 horas.
      */
     @Transactional
+    @Override
     public void dropAbandonedPurchase(long dropoutTimeInMinutes) {
         List<PurchaseOrder> abandonedPurchaseOrders = purchaseOrderRepository
                 .findByOrderStatusAndUpdateDateTimeBefore("Opened", LocalDateTime.now().minusMinutes(dropoutTimeInMinutes));
