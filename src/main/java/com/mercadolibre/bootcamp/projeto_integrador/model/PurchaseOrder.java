@@ -1,6 +1,7 @@
 package com.mercadolibre.bootcamp.projeto_integrador.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.mercadolibre.bootcamp.projeto_integrador.enums.OrderStatus;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -18,7 +19,11 @@ public class PurchaseOrder {
     private long purchaseId;
     private LocalDate date;
     private LocalDateTime updateDateTime;
-    private String orderStatus;
+
+    @Column(columnDefinition = OrderStatus.mysqlDefinition)
+    @Enumerated(EnumType.STRING)
+    private OrderStatus orderStatus;
+
     @ManyToOne
     @JoinColumn(name = "buyer_id", nullable = false)
     @JsonIgnore

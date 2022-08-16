@@ -6,6 +6,7 @@ import com.mercadolibre.bootcamp.projeto_integrador.dto.BatchPurchaseOrderReques
 import com.mercadolibre.bootcamp.projeto_integrador.dto.BatchRequestDto;
 import com.mercadolibre.bootcamp.projeto_integrador.dto.InboundOrderRequestDto;
 import com.mercadolibre.bootcamp.projeto_integrador.dto.PurchaseOrderRequestDto;
+import com.mercadolibre.bootcamp.projeto_integrador.enums.OrderStatus;
 import com.mercadolibre.bootcamp.projeto_integrador.model.*;
 import com.mercadolibre.bootcamp.projeto_integrador.repository.*;
 import com.mercadolibre.bootcamp.projeto_integrador.util.*;
@@ -178,7 +179,7 @@ public class BaseControllerTest {
 
     protected PurchaseOrderRequestDto newPurchaseOrderRequestDto(BatchPurchaseOrderRequestDto batch) {
         PurchaseOrderRequestDto purchaseOrder = new PurchaseOrderRequestDto();
-        purchaseOrder.setOrderStatus("Opened");
+        purchaseOrder.setOrderStatus(OrderStatus.OPENED);
         purchaseOrder.setBatch(batch);
         return purchaseOrder;
     }

@@ -4,6 +4,7 @@ import com.mercadolibre.bootcamp.projeto_integrador.dto.BatchBuyerResponseDto;
 import com.mercadolibre.bootcamp.projeto_integrador.dto.BatchPurchaseOrderRequestDto;
 import com.mercadolibre.bootcamp.projeto_integrador.dto.PurchaseOrderRequestDto;
 import com.mercadolibre.bootcamp.projeto_integrador.dto.PurchaseOrderResponseDto;
+import com.mercadolibre.bootcamp.projeto_integrador.enums.OrderStatus;
 import com.mercadolibre.bootcamp.projeto_integrador.exceptions.NotFoundException;
 import com.mercadolibre.bootcamp.projeto_integrador.exceptions.BatchOutOfStockException;
 import com.mercadolibre.bootcamp.projeto_integrador.exceptions.PurchaseOrderAlreadyClosedException;
@@ -17,6 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -62,7 +64,7 @@ public class PurchaseOrderService implements IPurchaseOrderService {
     public PurchaseOrderResponseDto update(long purchaseOrderId, long buyerId) {
         PurchaseOrder foundOrder = findPurchaseOrder(purchaseOrderId, buyerId);
 
-        foundOrder.setOrderStatus("Closed");
+        foundOrder.setOrderStatus(OrderStatus.CLOSED);
         foundOrder.setUpdateDateTime(LocalDateTime.now());
         purchaseOrderRepository.save(foundOrder);
 
@@ -111,7 +113,7 @@ public class PurchaseOrderService implements IPurchaseOrderService {
     @Override
     public void dropAbandonedPurchase(long dropoutTimeInMinutes) {
         List<PurchaseOrder> abandonedPurchaseOrders = purchaseOrderRepository
-                .findByOrderStatusAndUpdateDateTimeBefore("Opened", LocalDateTime.now().minusMinutes(dropoutTimeInMinutes));
+                .findByOrderStatusAndUpdateDateTimeBefore(OrderStatus.OPENED, LocalDateTime.now().minusMinutes(dropoutTimeInMinutes));
         List<BatchPurchaseOrder> batchPurchaseOrders = abandonedPurchaseOrders.stream()
                     .map(PurchaseOrder::getBatchPurchaseOrders)
                 .collect(ArrayList::new, List::addAll, List::addAll);
@@ -137,8 +139,8 @@ public class PurchaseOrderService implements IPurchaseOrderService {
      * @param orderStatus status da compra (Opened/Closed).
      * @return objeto PurchaseOrder encontrado ou criado.
      */
-    private PurchaseOrder getPurchaseOrder(Buyer buyer, String orderStatus){
-        PurchaseOrder purchaseOrder = purchaseOrderRepository.findOnePurchaseOrderByBuyerAndOrderStatusIsLike(buyer, "Opened");
+    private PurchaseOrder getPurchaseOrder(Buyer buyer, OrderStatus orderStatus){
+        PurchaseOrder purchaseOrder = purchaseOrderRepository.findOnePurchaseOrderByBuyerAndOrderStatusIsLike(buyer, OrderStatus.OPENED);
         if(purchaseOrder == null) {
             purchaseOrder = new PurchaseOrder();
             purchaseOrder.setBuyer(buyer);
@@ -218,7 +220,7 @@ public class PurchaseOrderService implements IPurchaseOrderService {
         Optional<PurchaseOrder> foundOrder = purchaseOrderRepository.findById(purchaseOrderId);
         if (foundOrder.isEmpty()) throw new NotFoundException("Purchase order");
         if(foundOrder.get().getBuyer().getBuyerId() != buyerId) throw new UnauthorizedBuyerException(buyerId, purchaseOrderId);
-        if (foundOrder.get().getOrderStatus().equals("Closed")) throw new PurchaseOrderAlreadyClosedException(foundOrder.get().getPurchaseId());
+        if (foundOrder.get().getOrderStatus().equals(OrderStatus.CLOSED)) throw new PurchaseOrderAlreadyClosedException(foundOrder.get().getPurchaseId());
         return foundOrder.get();
     }
 
