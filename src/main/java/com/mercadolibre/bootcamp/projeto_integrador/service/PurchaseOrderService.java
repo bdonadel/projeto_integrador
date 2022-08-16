@@ -145,6 +145,7 @@ public class PurchaseOrderService implements IPurchaseOrderService {
             purchaseOrder = new PurchaseOrder();
             purchaseOrder.setBuyer(buyer);
             purchaseOrder.setDate(LocalDate.now());
+            purchaseOrder.setReserved(false);
             purchaseOrderRepository.save(purchaseOrder);
         }
         purchaseOrder.setOrderStatus(orderStatus);
@@ -154,11 +155,12 @@ public class PurchaseOrderService implements IPurchaseOrderService {
 
     /**
      * Metodo que procura um batch e desconta quantidade.
-     * @param batchDto atchPurchaseOrderRequestDto contendo o id do batch.
+     * @param batchDto batchPurchaseOrderRequestDto contendo o id do batch.
      * @param purchase objeto PurchaseOrder sendo a compra atual para vincular o batch.
-     * @return Lista de Batch, um para cada produto.
+     * @return valor total da compra.
      */
     private BigDecimal getPurchaseInStock(BatchPurchaseOrderRequestDto batchDto, PurchaseOrder purchase) {
+        purchase = updateStockToPurchase(purchase);
         Optional<Batch> batchFound = batchRepository.findOneByBatchNumberAndCurrentQuantityGreaterThanEqualAndDueDateAfterOrderByDueDate(batchDto.getBatchNumber(),
                 batchDto.getQuantity(), LocalDate.now().plusDays(21));
 
@@ -167,7 +169,32 @@ public class PurchaseOrderService implements IPurchaseOrderService {
         batchFound.get().setCurrentQuantity(batchFound.get().getCurrentQuantity() - batchDto.getQuantity());
 
         purchase = saveBatchPurchaseOrder(batchFound.get(), batchDto, purchase);
+        purchase.setReserved(true);
         return sumTotalPrice(purchase);
+    }
+
+    private PurchaseOrder updateStockToPurchase(PurchaseOrder purchase) {
+        if (purchase.isReserved() || purchase.getBatchPurchaseOrders() == null || purchase.getBatchPurchaseOrders().isEmpty()) {
+            return purchase;
+        }
+
+        List<BatchPurchaseOrder> batchPurchasesReserved = purchase.getBatchPurchaseOrders().stream()
+                .filter(batchPurchase -> reserveBatch(batchPurchase.getBatch().getBatchNumber(), batchPurchase.getQuantity()))
+                .collect(Collectors.toList());
+        purchase.setBatchPurchaseOrders(batchPurchasesReserved);
+        purchase.setReserved(true);
+        return purchase;
+    }
+
+    private boolean reserveBatch(long batchNumber, int quantity) {
+        Optional<Batch> batchFound = batchRepository.findOneByBatchNumberAndCurrentQuantityGreaterThanEqualAndDueDateAfterOrderByDueDate(batchNumber,
+                quantity, LocalDate.now().plusDays(21));
+
+        if (batchFound.isEmpty()) {
+            return false;
+        }
+        batchFound.get().setCurrentQuantity(batchFound.get().getCurrentQuantity() - quantity);
+        return true;
     }
 
     /**

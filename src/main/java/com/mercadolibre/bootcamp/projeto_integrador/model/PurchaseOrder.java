@@ -17,12 +17,16 @@ public class PurchaseOrder {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long purchaseId;
+
     private LocalDate date;
+
     private LocalDateTime updateDateTime;
 
     @Column(columnDefinition = OrderStatus.mysqlDefinition)
     @Enumerated(EnumType.STRING)
     private OrderStatus orderStatus;
+
+    private boolean isReserved;
 
     @ManyToOne
     @JoinColumn(name = "buyer_id", nullable = false)
