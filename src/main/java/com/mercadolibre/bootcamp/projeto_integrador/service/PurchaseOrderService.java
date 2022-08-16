@@ -56,7 +56,9 @@ public class PurchaseOrderService implements IPurchaseOrderService {
         Buyer buyer = findBuyer(buyerId);
         PurchaseOrder purchaseOrder = getPurchaseOrder(buyer, request.getOrderStatus());
 
-        return new PurchaseOrderResponseDto(purchaseOrder.getPurchaseId(), getPurchaseInStock(request.getBatch(), purchaseOrder));
+        purchaseOrder = getPurchaseInStock(request.getBatch(), purchaseOrder);
+        return new PurchaseOrderResponseDto(purchaseOrder.getPurchaseId(),
+                mapListBatchPurchaseToListDto(purchaseOrder.getBatchPurchaseOrders()), sumTotalPrice(purchaseOrder));
     }
 
     /**
@@ -74,9 +76,11 @@ public class PurchaseOrderService implements IPurchaseOrderService {
         foundOrder.setUpdateDateTime(LocalDateTime.now());
         purchaseOrderRepository.save(foundOrder);
 
-        return new PurchaseOrderResponseDto(foundOrder.getPurchaseId(), foundOrder.getBatchPurchaseOrders().stream()
-                .map(batchPurchaseOrder -> batchPurchaseOrder.getUnitPrice().multiply(new BigDecimal(batchPurchaseOrder.getQuantity())))
-                .reduce(BigDecimal.ZERO, BigDecimal::add));
+        return new PurchaseOrderResponseDto(foundOrder.getPurchaseId(),
+                mapListBatchPurchaseToListDto(foundOrder.getBatchPurchaseOrders()),
+                foundOrder.getBatchPurchaseOrders().stream()
+                        .map(batchPurchaseOrder -> batchPurchaseOrder.getUnitPrice().multiply(new BigDecimal(batchPurchaseOrder.getQuantity())))
+                        .reduce(BigDecimal.ZERO, BigDecimal::add));
     }
 
     /**
@@ -170,7 +174,7 @@ public class PurchaseOrderService implements IPurchaseOrderService {
      * @param purchase objeto PurchaseOrder sendo a compra atual para vincular o batch.
      * @return valor total da compra.
      */
-    private BigDecimal getPurchaseInStock(BatchPurchaseOrderRequestDto batchDto, PurchaseOrder purchase) {
+    private PurchaseOrder getPurchaseInStock(BatchPurchaseOrderRequestDto batchDto, PurchaseOrder purchase) {
         purchase = updateStockToPurchase(purchase);
         Optional<Batch> batchFound = batchRepository.findOneByBatchNumberAndCurrentQuantityGreaterThanEqualAndDueDateAfterOrderByDueDate(batchDto.getBatchNumber(),
                 batchDto.getQuantity(), LocalDate.now().plusDays(21));
@@ -181,7 +185,7 @@ public class PurchaseOrderService implements IPurchaseOrderService {
 
         purchase = saveBatchPurchaseOrder(batchFound.get(), batchDto, purchase);
         purchase.setReserved(true);
-        return sumTotalPrice(purchase);
+        return purchase;
     }
 
     private PurchaseOrder updateStockToPurchase(PurchaseOrder purchase) {
