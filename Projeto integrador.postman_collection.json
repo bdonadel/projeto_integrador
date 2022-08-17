@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "61a32a80-7c23-4acd-892a-47d264c4357e",
+		"_postman_id": "1b5a4421-8d7d-4be2-a268-491214c97bdc",
 		"name": "Projeto integrador",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -564,7 +564,7 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n    \"orderStatus\": \"Opened\",\n    \"batch\": {\n        \"batchNumber\": 1,\n        \"quantity\": 2\n    }\n}",
+									"raw": "{\n    \"orderStatus\": \"OPENED\",\n    \"batch\": {\n        \"batchNumber\": 1,\n        \"quantity\": 2\n    }\n}",
 									"options": {
 										"raw": {
 											"language": "json"
