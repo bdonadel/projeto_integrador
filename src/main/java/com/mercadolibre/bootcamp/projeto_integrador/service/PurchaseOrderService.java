@@ -96,7 +96,11 @@ public class PurchaseOrderService implements IPurchaseOrderService {
     @Override
     public void dropProducts(long purchaseOrderId, BatchPurchaseOrderRequestDto batchDto, long buyerId) {
         PurchaseOrder purchaseOrder = findPurchaseOrder(purchaseOrderId, buyerId);
-        batchPurchaseOrderRepository.delete(returnToStock(findBatchPurchaseOrder(purchaseOrder, findBatchById(batchDto.getBatchNumber()))));
+        BatchPurchaseOrder deleteBatchPurchase = findBatchPurchaseOrder(purchaseOrder, findBatchById(batchDto.getBatchNumber()));
+        if (purchaseOrder.isReserved()) {
+            returnToStock(deleteBatchPurchase);
+        }
+        batchPurchaseOrderRepository.delete(deleteBatchPurchase);
         purchaseOrder.setUpdateDateTime(LocalDateTime.now());
         purchaseOrderRepository.save(purchaseOrder);
     }
