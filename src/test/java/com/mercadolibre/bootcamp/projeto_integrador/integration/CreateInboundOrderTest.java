@@ -62,7 +62,7 @@ public class CreateInboundOrderTest extends BaseControllerTest {
         assertThat(batchRepository.findAll().size()).isEqualTo(quantityBatch + 1);
     }
 
-    @Test // TODO cobrir todos os validations
+    @Test
     void createInboundOrder_returnsError_whenIsGivenAnInvalidInput() throws Exception {
         int quantityInboundOrder = inboundOrderRepository.findAll().size();
         int quantityBatch = batchRepository.findAll().size();
@@ -171,15 +171,5 @@ public class CreateInboundOrderTest extends BaseControllerTest {
 
         assertThat(inboundOrderRepository.findAll().size()).isEqualTo(quantityInboundOrder);
         assertThat(batchRepository.findAll().size()).isEqualTo(quantityBatch);
-    }
-
-    @Test
-    void createInboundOrder_returnsBadRequest_whenSectionNoExist() throws Exception {
-        // TODO
-    }
-
-    @Test
-    void createInboundOrder_returnsBadRequest_whenSectionHasNoSpace() throws Exception {
-        // TODO
     }
 }
