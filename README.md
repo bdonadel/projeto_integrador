@@ -318,7 +318,7 @@ Retorna todos os lotes disponíveis para compra em uma determinada categoria (RF
 </code></pre>
 
 `POST /api/v1/fresh-products/orders`<br>
-Adiciona um lote ao carrinho do cliente. Retorna o ID do carrinho e o valor total acumulado dele.
+Adiciona um produto ao carrinho do cliente e reserva os itens que estiverem em estoque. Retorna o ID do carrinho, status, o valor total acumulado e batches dele.
 <pre><code><b>Payload Example:</b>
 {
     "orderStatus": "Opened",
@@ -331,8 +331,29 @@ Adiciona um lote ao carrinho do cliente. Retorna o ID do carrinho e o valor tota
 <b>Response:</b>
  
  {
-    "purchaseOrderId": 2,
-    "totalPrice": 131.88
+    "purchaseOrderId": 1,
+    "orderStatus": "OPENED",
+    "totalPrice": 131.88,
+    "batches": [
+        {
+            "batchNumber": 1,
+            "productName": "Iogurte",
+            "brand": "Danone",
+            "category": "CHILLED",
+            "quantity": 4,
+            "dueDate": "2024-08-20",
+            "productPrice": 10.99
+        },
+        {
+            "batchNumber": 2,
+            "productName": "Queijo",
+            "brand": "Sadia",
+            "category": "CHILLED",
+            "quantity": 4,
+            "dueDate": "2024-08-20",
+            "productPrice": 7.50
+        }
+    ]
 }
 </code></pre>
 
@@ -361,4 +382,33 @@ Remove um lote do carrinho do cliente.
 </code></pre>
 
 `PUT /api/v1/fresh-products/orders?purchaseOrderId={purchaseOrderId}`<br>
-Fecha o carrinho do cliente.
+Fecha o carrinho do cliente, se houver disponibilidade dos produtos.
+<pre><code><b>Payload Example:</b>
+<b>Response:</b>
+ 
+ {
+    "purchaseOrderId": 1,
+    "orderStatus": "CLOSED",
+    "totalPrice": 131.88,
+    "batches": [
+        {
+            "batchNumber": 1,
+            "productName": "Iogurte",
+            "brand": "Danone",
+            "category": "CHILLED",
+            "quantity": 4,
+            "dueDate": "2024-08-20",
+            "productPrice": 10.99
+        },
+        {
+            "batchNumber": 2,
+            "productName": "Queijo",
+            "brand": "Sadia",
+            "category": "CHILLED",
+            "quantity": 4,
+            "dueDate": "2024-08-20",
+            "productPrice": 7.50
+        }
+    ]
+}
+</code></pre>
