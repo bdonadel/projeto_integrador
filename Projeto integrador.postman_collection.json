@@ -1,9 +1,8 @@
 {
 	"info": {
-		"_postman_id": "8660f131-1699-4013-8598-850bee205f41",
+		"_postman_id": "61a32a80-7c23-4acd-892a-47d264c4357e",
 		"name": "Projeto integrador",
-		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-		"_exporter_id": "22711155"
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
 	"item": [
 		{
@@ -679,6 +678,29 @@
 											"key": "purchaseOrderId",
 											"value": "1"
 										}
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "US6",
+					"item": [
+						{
+							"name": "Clean orders",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"url": {
+									"raw": "{{base}}/fresh-products/clean-orders",
+									"host": [
+										"{{base}}"
+									],
+									"path": [
+										"fresh-products",
+										"clean-orders"
 									]
 								}
 							},

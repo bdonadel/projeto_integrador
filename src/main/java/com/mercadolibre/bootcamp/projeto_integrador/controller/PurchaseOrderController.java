@@ -48,7 +48,7 @@ public class PurchaseOrderController {
         return ResponseEntity.ok(service.getBatches(buyerId, purchaseOrderId));
     }
 
-    @GetMapping("/fresh-products/clean-orders")
+    @PostMapping("/fresh-products/clean-orders")
     public ResponseEntity<Void> dropAbandonedPurchase() {
         service.dropAbandonedPurchase(120);
         return ResponseEntity.noContent().build();
