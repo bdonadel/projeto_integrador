@@ -51,7 +51,7 @@ public class UpdateInboundOrderTest extends BaseControllerTest {
         savedFreshInboundOrder = getSavedInboundOrder(freshSection);
         orderNumber = savedFreshInboundOrder.getOrderNumber();
         batchOfFreshRequestDto = getValidBatchRequest(freshProduct);
-        batchOfFreshSaved = getSavedBatch(batchOfFreshRequestDto, savedFreshInboundOrder);
+        batchOfFreshSaved = getSavedBatch(batchOfFreshRequestDto, savedFreshInboundOrder, freshProduct);
         validInboundOrderRequest = getValidInboundOrderRequestDto(freshSection, batchOfFreshRequestDto);
     }
 
@@ -192,7 +192,7 @@ public class UpdateInboundOrderTest extends BaseControllerTest {
         // Save batch by another manager
         Section freshSectionFromAnotherManager = getSavedFreshSection(warehouse, forbiddenManager);
         InboundOrder freshInboundFromAnotherManager = getSavedInboundOrder(freshSectionFromAnotherManager);
-        Batch batchOfFreshFromAnotherManager = getSavedBatch(batchOfFreshRequestDto, freshInboundFromAnotherManager);
+        Batch batchOfFreshFromAnotherManager = getSavedBatch(batchOfFreshRequestDto, freshInboundFromAnotherManager, freshProduct);
         long batchNumberFromAnotherManager = batchOfFreshFromAnotherManager.getBatchNumber();
         float currentTemperature = batchOfFreshFromAnotherManager.getCurrentTemperature();
         // Set batchNumber

@@ -49,7 +49,7 @@ public class JobTest extends BaseControllerTest {
         buyer = getSavedBuyer();
         BatchRequestDto batchOfFreshRequestDto = getValidBatchRequest(freshProduct);
         batchOfFreshRequestDto.setInitialQuantity(initialQuantity);
-        batchOfFreshSaved = getSavedBatch(batchOfFreshRequestDto, savedFreshInboundOrder);
+        batchOfFreshSaved = getSavedBatch(batchOfFreshRequestDto, savedFreshInboundOrder, freshProduct);
     }
 
     @Test
@@ -76,6 +76,7 @@ public class JobTest extends BaseControllerTest {
         // Assert
         PurchaseOrder orderAfterJob = purchaseOrderRepository.findById(orderId).get();
         assertThat(orderAfterJob).isNotNull();
+        assertThat(orderAfterJob.isReserved()).isTrue();
         BatchPurchaseOrder batchPurchase = batchPurchaseOrderRepository
                 .findOneByPurchaseOrderAndBatch(orderAfterJob, batchOfFreshSaved).get();
         assertThat(batchPurchase).isNotNull();
@@ -108,11 +109,12 @@ public class JobTest extends BaseControllerTest {
         jobs.dropAbandonedPurchase();
 
         // Assert
-        Optional<PurchaseOrder> orderAfterJob = purchaseOrderRepository.findById(orderId);
-        assertThat(orderAfterJob).isEqualTo(Optional.empty());
-        Optional<BatchPurchaseOrder> batchPurchase = batchPurchaseOrderRepository
-                .findOneByPurchaseOrderAndBatch(purchaseOrder, batchOfFreshSaved);
-        assertThat(batchPurchase).isEqualTo(Optional.empty());
+        PurchaseOrder orderAfterJob = purchaseOrderRepository.findById(orderId).get();
+        assertThat(orderAfterJob).isNotNull();
+        assertThat(orderAfterJob.isReserved()).isFalse();
+        BatchPurchaseOrder batchPurchase = batchPurchaseOrderRepository
+                .findOneByPurchaseOrderAndBatch(orderAfterJob, batchOfFreshSaved).get();
+        assertThat(batchPurchase).isNotNull();
         Batch batchAfterJob = batchRepository.findById(batchOfFreshSaved.getBatchNumber()).get();
         assertThat(batchAfterJob.getCurrentQuantity()).isEqualTo(initialQuantity);
     }

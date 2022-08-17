@@ -77,8 +77,9 @@ public class BaseControllerTest {
         return batchRequest;
     }
 
-    protected Batch getSavedBatch(BatchRequestDto batchRequest, InboundOrder inboundOrder) {
+    protected Batch getSavedBatch(BatchRequestDto batchRequest, InboundOrder inboundOrder, Product product) {
         Batch batch = BatchGenerator.mapBatchRequestDtoToBatch(batchRequest);
+        batch.setProduct(product);
         batch.setInboundOrder(inboundOrder);
         batch.setCurrentQuantity(batch.getInitialQuantity());
         return batchRepository.save(batch);
