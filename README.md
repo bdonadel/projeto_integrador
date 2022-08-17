@@ -319,9 +319,10 @@ Retorna todos os lotes disponíveis para compra em uma determinada categoria (RF
 
 `POST /api/v1/fresh-products/orders`<br>
 Adiciona um produto ao carrinho do cliente e reserva os itens que estiverem em estoque. Retorna o ID do carrinho, status, o valor total acumulado e batches dele.
+No response são retornados o id, o status, o preço total e os batches adquiridos na ordem.
 <pre><code><b>Payload Example:</b>
 {
-    "orderStatus": "Opened",
+    "orderStatus": "OPENED",
     "batch": {
         "batchNumber": 1,
         "quantity": 2
@@ -382,7 +383,8 @@ Remove um lote do carrinho do cliente.
 </code></pre>
 
 `PUT /api/v1/fresh-products/orders?purchaseOrderId={purchaseOrderId}`<br>
-Fecha o carrinho do cliente, se houver disponibilidade dos produtos.
+Fecha o carrinho do cliente, se houver disponibilidade dos produtos. Caso contrário, apenas remove do carrinho os produtos sem estoque suficiente.
+No response são retornados o id, o status, o preço total e os batches adquiridos na ordem.
 <pre><code><b>Payload Example:</b>
 <b>Response:</b>
  

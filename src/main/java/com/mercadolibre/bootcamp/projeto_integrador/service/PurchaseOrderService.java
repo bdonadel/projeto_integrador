@@ -42,7 +42,7 @@ public class PurchaseOrderService implements IPurchaseOrderService {
     IBatchPurchaseOrderRepository batchPurchaseOrderRepository;
 
     /**
-     * Metodo que cria um carrinho (PurchaseOrder) novo ou insere/atualiza itens em um carrinho existente.
+     * Método que cria um carrinho (PurchaseOrder) novo ou insere/atualiza itens em um carrinho existente.
      *
      * @param request objeto PurchaseOrderRequestDto.
      * @return valor BigDecimal do valor total em carrinho.
@@ -60,7 +60,7 @@ public class PurchaseOrderService implements IPurchaseOrderService {
     }
 
     /**
-     * Metodo que atualiza o carrinho (PurchaseOrder) para fechado.
+     * Método que atualiza o carrinho (PurchaseOrder) para fechado.
      *
      * @param purchaseOrderId identificador do carrinho.
      * @return valor BigDecimal do valor total da compra.
@@ -86,7 +86,7 @@ public class PurchaseOrderService implements IPurchaseOrderService {
     }
 
     /**
-     * Metodo que remove produto do carrinho.
+     * Método que remove produto do carrinho.
      *
      * @param purchaseOrderId identificador do carrinho (PurchaseOrder).
      * @param batchDto        objeto BatchPurchaseOrderRequestDto com id do batch a ser retirado do carrinho.
@@ -121,7 +121,7 @@ public class PurchaseOrderService implements IPurchaseOrderService {
     }
 
     /**
-     * Método que deleta os carrinhos (PurchaseOrder) abandonados há mais de 2 horas.
+     * Método que devolve para o estoque os produtos dos carrinhos (PurchaseOrder) abandonados há mais de 1 horas.
      */
     @Transactional
     @Override
@@ -136,24 +136,11 @@ public class PurchaseOrderService implements IPurchaseOrderService {
         abandonedPurchaseOrders.forEach(purchaseOrder -> purchaseOrder.setReserved(false));
     }
 
-    /**
-     * Metodo que devolve ao estoque a quantidade que estava no carrinho.
-     *
-     * @param batchPurchaseOrder objeto da tabela nxm BatchPurchaseOrder.
-     * @return o próprio objeto BatchPurchaseOrder.
-     */
     private BatchPurchaseOrder returnToStock(BatchPurchaseOrder batchPurchaseOrder) {
         batchPurchaseOrder.getBatch().setCurrentQuantity(batchPurchaseOrder.getBatch().getCurrentQuantity() + batchPurchaseOrder.getQuantity());
         return batchPurchaseOrder;
     }
 
-    /**
-     * Metodo que verifica se o comprador ter uma PurchaseOrder aberta, senão cria uma nova.
-     *
-     * @param buyer       objeto do comprador.
-     * @param orderStatus status da compra (Opened/Closed).
-     * @return objeto PurchaseOrder encontrado ou criado.
-     */
     private PurchaseOrder getPurchaseOrder(Buyer buyer, OrderStatus orderStatus) {
         PurchaseOrder purchaseOrder = purchaseOrderRepository.findOnePurchaseOrderByBuyerAndOrderStatusIsLike(buyer, OrderStatus.OPENED);
         if (purchaseOrder == null) {
@@ -168,13 +155,6 @@ public class PurchaseOrderService implements IPurchaseOrderService {
         return purchaseOrder;
     }
 
-    /**
-     * Metodo que procura um batch e desconta quantidade.
-     *
-     * @param batchDto batchPurchaseOrderRequestDto contendo o id do batch.
-     * @param purchase objeto PurchaseOrder sendo a compra atual para vincular o batch.
-     * @return valor total da compra.
-     */
     private PurchaseOrder getPurchaseInStock(BatchPurchaseOrderRequestDto batchDto, PurchaseOrder purchase) {
         purchase = updateStockToPurchase(purchase);
         Optional<Batch> batchFound = batchRepository.findOneByBatchNumberAndCurrentQuantityGreaterThanEqualAndDueDateAfterOrderByDueDate(batchDto.getBatchNumber(),
@@ -222,25 +202,12 @@ public class PurchaseOrderService implements IPurchaseOrderService {
         batchPurchaseOrderRepository.deleteAll(batchPurchases);
     }
 
-    /**
-     * Metodo que calcula e retorna o preço total (quantidade comprada * preço do item no estoque)
-     *
-     * @param purchase objeto PurchaseOrder para pegar todos os batches relacionados.
-     * @return valor BigDecimal.
-     */
     private BigDecimal sumTotalPrice(PurchaseOrder purchase) {
         return purchase.getBatchPurchaseOrders().stream()
                 .map(batchPurchaseOrder -> batchPurchaseOrder.getUnitPrice().multiply(new BigDecimal(batchPurchaseOrder.getQuantity())))
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
     }
 
-    /**
-     * Metodo cria uma nova tabela nxm ou atualiza a já existente.
-     *
-     * @param batch    objeto Batch disponivel para descontar quantidade do batch.
-     * @param batchDto objeto BatchPurchaseOrderRequestDto.
-     * @param purchase objeto Purchase que será usado na relação nxm.
-     */
     private PurchaseOrder saveBatchPurchaseOrder(Batch batch, BatchPurchaseOrderRequestDto batchDto, PurchaseOrder purchase) {
         // Se já existir a tabela nxm entre um batch e uma purchase ela só é atualizada com a nova quantidade.
         BatchPurchaseOrder batchPurchaseOrder;
@@ -264,13 +231,6 @@ public class PurchaseOrderService implements IPurchaseOrderService {
         return purchase;
     }
 
-    /**
-     * Metodo que procura por uma PurchaseOrder já existente para o cliente.
-     *
-     * @param purchaseOrderId identificador da PurchaseOrder.
-     * @param buyerId         identificador do comprador.
-     * @return objeto PurchaseOrder encontrado.
-     */
     private PurchaseOrder findPurchaseOrder(long purchaseOrderId, long buyerId) {
         Optional<PurchaseOrder> foundOrder = purchaseOrderRepository.findById(purchaseOrderId);
         if (foundOrder.isEmpty()) throw new NotFoundException("Purchase order");
@@ -281,37 +241,18 @@ public class PurchaseOrderService implements IPurchaseOrderService {
         return foundOrder.get();
     }
 
-    /**
-     * Metodo que verifica se comprador existe e o retorna.
-     *
-     * @param buyerId identificador do comprador.
-     * @return Objeto Buyer contendo infos do comprador.
-     */
     private Buyer findBuyer(long buyerId) {
         Optional<Buyer> foundBuyer = buyerRepository.findById(buyerId);
         if (foundBuyer.isEmpty()) throw new NotFoundException("Buyer");
         return foundBuyer.get();
     }
 
-    /**
-     * Metodo que verifica se batch existe e o retorna.
-     *
-     * @param batchNumber identificador do batch.
-     * @return Objeto Batch contendo infos do batch.
-     */
     private Batch findBatchById(long batchNumber) {
         Optional<Batch> foundBatch = batchRepository.findById(batchNumber);
         if (foundBatch.isEmpty()) throw new NotFoundException("Batch");
         return foundBatch.get();
     }
 
-    /**
-     * Metodo que retorna o objeto intermediário da relação nxm entre Batch e PurchaseOrder.
-     *
-     * @param purchase objeto PurchaseOrder.
-     * @param batch    objeto Batch
-     * @return Objeto BatchPurchaseOrder.
-     */
     private BatchPurchaseOrder findBatchPurchaseOrder(PurchaseOrder purchase, Batch batch) {
         Optional<BatchPurchaseOrder> foundBatchPurchaseOrder = batchPurchaseOrderRepository.findOneByPurchaseOrderAndBatch(purchase, batch);
         if (foundBatchPurchaseOrder.isEmpty()) throw new NotFoundException("Batch PurchaseOrder");
