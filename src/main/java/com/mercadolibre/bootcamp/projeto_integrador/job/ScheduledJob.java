@@ -10,8 +10,8 @@ public class ScheduledJob {
     @Autowired
     private IPurchaseOrderService servicePurchase;
 
-    @Scheduled(cron = "0 0 * ? * *")
+    @Scheduled(cron = "0 */15 * ? * *")
     public void dropAbandonedPurchase() {
-        servicePurchase.dropAbandonedPurchase(120);
+        servicePurchase.dropAbandonedPurchase(60);
     }
 }

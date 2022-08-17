@@ -132,9 +132,8 @@ public class PurchaseOrderService implements IPurchaseOrderService {
                 .map(PurchaseOrder::getBatchPurchaseOrders)
                 .collect(ArrayList::new, List::addAll, List::addAll);
 
-        batchPurchaseOrders.forEach(batch -> returnToStock(batch));
-        batchPurchaseOrderRepository.deleteAll(batchPurchaseOrders);
-        purchaseOrderRepository.deleteAll(abandonedPurchaseOrders);
+        batchPurchaseOrders.stream().forEach(batch -> returnToStock(batch));
+        abandonedPurchaseOrders.forEach(purchaseOrder -> purchaseOrder.setReserved(false));
     }
 
     /**
