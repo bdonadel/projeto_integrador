@@ -131,7 +131,7 @@ public class PurchaseOrderService implements IPurchaseOrderService {
     @Override
     public void dropAbandonedPurchase(long dropoutTimeInMinutes) {
         List<PurchaseOrder> abandonedPurchaseOrders = purchaseOrderRepository
-                .findByOrderStatusAndUpdateDateTimeBefore(OrderStatus.OPENED, LocalDateTime.now().minusMinutes(dropoutTimeInMinutes));
+                .findByOrderStatusAndIsReservedAndUpdateDateTimeBefore(OrderStatus.OPENED, true, LocalDateTime.now().minusMinutes(dropoutTimeInMinutes));
         List<BatchPurchaseOrder> batchPurchaseOrders = abandonedPurchaseOrders.stream()
                 .map(PurchaseOrder::getBatchPurchaseOrders)
                 .collect(ArrayList::new, List::addAll, List::addAll);

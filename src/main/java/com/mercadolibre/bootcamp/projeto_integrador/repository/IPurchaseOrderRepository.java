@@ -11,5 +11,5 @@ import java.util.List;
 public interface IPurchaseOrderRepository extends JpaRepository<PurchaseOrder, Long> {
     PurchaseOrder findOnePurchaseOrderByBuyerAndOrderStatusIsLike(Buyer buyer, OrderStatus orderStatus);
     PurchaseOrder findOneByPurchaseIdAndBuyer(long orderId, Buyer buyer);
-    List<PurchaseOrder> findByOrderStatusAndUpdateDateTimeBefore(OrderStatus status, LocalDateTime dateTime);
+    List<PurchaseOrder> findByOrderStatusAndIsReservedAndUpdateDateTimeBefore(OrderStatus status, boolean isReserved, LocalDateTime dateTime);
 }
