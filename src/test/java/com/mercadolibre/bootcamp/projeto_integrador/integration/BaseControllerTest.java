@@ -2,8 +2,11 @@ package com.mercadolibre.bootcamp.projeto_integrador.integration;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.mercadolibre.bootcamp.projeto_integrador.dto.BatchPurchaseOrderRequestDto;
 import com.mercadolibre.bootcamp.projeto_integrador.dto.BatchRequestDto;
 import com.mercadolibre.bootcamp.projeto_integrador.dto.InboundOrderRequestDto;
+import com.mercadolibre.bootcamp.projeto_integrador.dto.PurchaseOrderRequestDto;
+import com.mercadolibre.bootcamp.projeto_integrador.enums.OrderStatus;
 import com.mercadolibre.bootcamp.projeto_integrador.model.*;
 import com.mercadolibre.bootcamp.projeto_integrador.repository.*;
 import com.mercadolibre.bootcamp.projeto_integrador.util.*;
@@ -35,6 +38,10 @@ public class BaseControllerTest {
     protected IBatchRepository batchRepository;
     @Autowired
     protected IInboundOrderRepository inboundOrderRepository;
+    @Autowired
+    protected IPurchaseOrderRepository purchaseOrderRepository;
+    @Autowired
+    protected IBuyerRepository buyerRepository;
 
     public BaseControllerTest() {
         objectMapper = new ObjectMapper();
@@ -70,9 +77,11 @@ public class BaseControllerTest {
         return batchRequest;
     }
 
-    protected Batch getSavedBatch(BatchRequestDto batchRequest, InboundOrder inboundOrder) {
+    protected Batch getSavedBatch(BatchRequestDto batchRequest, InboundOrder inboundOrder, Product product) {
         Batch batch = BatchGenerator.mapBatchRequestDtoToBatch(batchRequest);
+        batch.setProduct(product);
         batch.setInboundOrder(inboundOrder);
+        batch.setCurrentQuantity(batch.getInitialQuantity());
         return batchRepository.save(batch);
     }
 
@@ -163,5 +172,16 @@ public class BaseControllerTest {
         requestDto.setBatchStock(batchRequest);
         requestDto.setSectionCode(section.getSectionCode());
         return requestDto;
+    }
+
+    protected Buyer getSavedBuyer() {
+        return buyerRepository.save(BuyerGenerator.newBuyer());
+    }
+
+    protected PurchaseOrderRequestDto newPurchaseOrderRequestDto(BatchPurchaseOrderRequestDto batch) {
+        PurchaseOrderRequestDto purchaseOrder = new PurchaseOrderRequestDto();
+        purchaseOrder.setOrderStatus(OrderStatus.OPENED);
+        purchaseOrder.setBatch(batch);
+        return purchaseOrder;
     }
 }

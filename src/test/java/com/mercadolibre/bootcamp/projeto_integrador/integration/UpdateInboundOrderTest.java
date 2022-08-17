@@ -51,7 +51,7 @@ public class UpdateInboundOrderTest extends BaseControllerTest {
         savedFreshInboundOrder = getSavedInboundOrder(freshSection);
         orderNumber = savedFreshInboundOrder.getOrderNumber();
         batchOfFreshRequestDto = getValidBatchRequest(freshProduct);
-        batchOfFreshSaved = getSavedBatch(batchOfFreshRequestDto, savedFreshInboundOrder);
+        batchOfFreshSaved = getSavedBatch(batchOfFreshRequestDto, savedFreshInboundOrder, freshProduct);
         validInboundOrderRequest = getValidInboundOrderRequestDto(freshSection, batchOfFreshRequestDto);
     }
 
@@ -165,8 +165,8 @@ public class UpdateInboundOrderTest extends BaseControllerTest {
                         .header("Manager-Id", manager.getManagerId())
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isBadRequest())
-                .andExpect(jsonPath("$.name").value("Invalid batch quantity"))
-                .andExpect(jsonPath("$.message", containsString("update batch initial quantity")));
+                .andExpect(jsonPath("$.name").value("Campo(s) inválido(s)"))
+                .andExpect(jsonPath("$.message", containsString("quantidade inicial deve ser")));
 
         assertThat(batchRepository.findById(batchNumber).get().getInitialQuantity())
                 .isEqualTo(batchInicialQuantity);
@@ -192,7 +192,7 @@ public class UpdateInboundOrderTest extends BaseControllerTest {
         // Save batch by another manager
         Section freshSectionFromAnotherManager = getSavedFreshSection(warehouse, forbiddenManager);
         InboundOrder freshInboundFromAnotherManager = getSavedInboundOrder(freshSectionFromAnotherManager);
-        Batch batchOfFreshFromAnotherManager = getSavedBatch(batchOfFreshRequestDto, freshInboundFromAnotherManager);
+        Batch batchOfFreshFromAnotherManager = getSavedBatch(batchOfFreshRequestDto, freshInboundFromAnotherManager, freshProduct);
         long batchNumberFromAnotherManager = batchOfFreshFromAnotherManager.getBatchNumber();
         float currentTemperature = batchOfFreshFromAnotherManager.getCurrentTemperature();
         // Set batchNumber
