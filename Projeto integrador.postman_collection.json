@@ -1,0 +1,1550 @@
+{
+	"info": {
+		"_postman_id": "8660f131-1699-4013-8598-850bee205f41",
+		"name": "Projeto integrador",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "22711155"
+	},
+	"item": [
+		{
+			"name": "Successful tests",
+			"item": [
+				{
+					"name": "US1",
+					"item": [
+						{
+							"name": "Insert new InboundOrder",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Manager-Id",
+										"value": "1",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"sectionCode\": 3,\n    \"batchStock\": [\n        {\n            \"productId\": 1,\n            \"currentTemperature\": 18.7,\n            \"minimumTemperature\": 10.0,\n            \"initialQuantity\": 4,\n            \"manufacturingDate\": \"25-07-2022\",\n            \"manufacturingTime\": \"25-07-2022 14:23:54\",\n            \"dueDate\": \"20-08-2024\",\n            \"productPrice\": 10.99\n        },\n        {\n            \"productId\": 2,\n            \"currentTemperature\": 10.1,\n            \"minimumTemperature\": 7.8,\n            \"initialQuantity\": 1001,\n            \"manufacturingDate\": \"25-07-2022\",\n            \"manufacturingTime\": \"25-07-2022 14:23:54\",\n            \"dueDate\": \"20-08-2024\",\n            \"productPrice\": 7.50\n        },\n        {\n            \"productId\": 2,\n            \"currentTemperature\": 10.1,\n            \"minimumTemperature\": 7.8,\n            \"initialQuantity\": 57,\n            \"manufacturingDate\": \"25-07-2022\",\n            \"manufacturingTime\": \"25-07-2022 14:23:54\",\n            \"dueDate\": \"20-06-2023\",\n            \"productPrice\": 7.50\n        },\n        {\n            \"productId\": 5,\n            \"currentTemperature\": 10.1,\n            \"minimumTemperature\": 7.8,\n            \"initialQuantity\": 12,\n            \"manufacturingDate\": \"25-07-2022\",\n            \"manufacturingTime\": \"25-07-2022 14:23:54\",\n            \"dueDate\": \"20-09-2023\",\n            \"productPrice\": 7.50\n        },\n        {\n            \"productId\": 3,\n            \"currentTemperature\": 10.1,\n            \"minimumTemperature\": 7.8,\n            \"initialQuantity\": 1059,\n            \"manufacturingDate\": \"25-07-2022\",\n            \"manufacturingTime\": \"25-07-2022 14:23:54\",\n            \"dueDate\": \"20-11-2022\",\n            \"productPrice\": 7.50\n        }\n\n    ]\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base}}/fresh-products/inboundorder",
+									"host": [
+										"{{base}}"
+									],
+									"path": [
+										"fresh-products",
+										"inboundorder"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Update InboundOrder",
+							"request": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Manager-Id",
+										"value": "1",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"sectionCode\": 3,\n    \"batchStock\": [\n        {\n            \"batchNumber\": 1,\n            \"productId\": 1,\n            \"currentTemperature\": 18.7,\n            \"minimumTemperature\": 10.0,\n            \"initialQuantity\": 15,\n            \"manufacturingDate\": \"25-07-2021\",\n            \"manufacturingTime\": \"25-07-2021 14:23:54\",\n            \"dueDate\": \"20-08-2024\",\n            \"productPrice\": 5.99\n        }\n    ]\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base}}/fresh-products/inboundorder?orderNumber=1",
+									"host": [
+										"{{base}}"
+									],
+									"path": [
+										"fresh-products",
+										"inboundorder"
+									],
+									"query": [
+										{
+											"key": "orderNumber",
+											"value": "1"
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "US4",
+					"item": [
+						{
+							"name": "Get product sum on warehouse",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Manager-Id",
+										"value": "1",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{base}}/fresh-products/warehouse?productId=2",
+									"host": [
+										"{{base}}"
+									],
+									"path": [
+										"fresh-products",
+										"warehouse"
+									],
+									"query": [
+										{
+											"key": "productId",
+											"value": "2"
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "US3",
+					"item": [
+						{
+							"name": "Get all batches by product id",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Manager-Id",
+										"value": "1",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{base}}/fresh-products/list?productId=2",
+									"host": [
+										"{{base}}"
+									],
+									"path": [
+										"fresh-products",
+										"list"
+									],
+									"query": [
+										{
+											"key": "productId",
+											"value": "2"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get all batches by product id order by batchNumber",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Manager-Id",
+										"value": "1",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{base}}/fresh-products/list?productId=2&orderBy=l",
+									"host": [
+										"{{base}}"
+									],
+									"path": [
+										"fresh-products",
+										"list"
+									],
+									"query": [
+										{
+											"key": "productId",
+											"value": "2"
+										},
+										{
+											"key": "orderBy",
+											"value": "l"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get all batches by product id order by dueDate",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Manager-Id",
+										"value": "1",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{base}}/fresh-products/list?productId=2&orderBy=v",
+									"host": [
+										"{{base}}"
+									],
+									"path": [
+										"fresh-products",
+										"list"
+									],
+									"query": [
+										{
+											"key": "productId",
+											"value": "2"
+										},
+										{
+											"key": "orderBy",
+											"value": "v"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get all batches by product id order by currentQuantity",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Manager-Id",
+										"value": "1",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{base}}/fresh-products/list?productId=2&orderBy=q",
+									"host": [
+										"{{base}}"
+									],
+									"path": [
+										"fresh-products",
+										"list"
+									],
+									"query": [
+										{
+											"key": "productId",
+											"value": "2"
+										},
+										{
+											"key": "orderBy",
+											"value": "q"
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "US5",
+					"item": [
+						{
+							"name": "Get expiring batches (order by due date)",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"var postRequest = {",
+											"  url: 'localhost:8080/api/v1/fresh-products/inboundorder',",
+											"  method: 'POST',",
+											"  header: {",
+											"    'Content-Type': 'application/json',",
+											"    'Manager-Id': '1'",
+											"  },",
+											"  body: {",
+											"    mode: 'raw',",
+											"    raw: JSON.stringify({",
+											"    \"sectionCode\": 3,",
+											"    \"batchStock\": [",
+											"        {",
+											"            \"productId\": 1,",
+											"            \"currentTemperature\": 18.7,",
+											"            \"minimumTemperature\": 10.0,",
+											"            \"initialQuantity\": 150,",
+											"            \"manufacturingDate\": \"25-07-2022\",",
+											"            \"manufacturingTime\": \"25-07-2022 14:23:54\",",
+											"            \"dueDate\": \"25-08-2022\",",
+											"            \"productPrice\": 10.99",
+											"        },",
+											"        {",
+											"            \"productId\": 5,",
+											"            \"currentTemperature\": 18.7,",
+											"            \"minimumTemperature\": 10.0,",
+											"            \"initialQuantity\": 79,",
+											"            \"manufacturingDate\": \"25-07-2022\",",
+											"            \"manufacturingTime\": \"25-07-2022 14:23:54\",",
+											"            \"dueDate\": \"06-09-2022\",",
+											"            \"productPrice\": 7.99",
+											"        }",
+											"    ]",
+											"})",
+											"  }",
+											"};",
+											"pm.sendRequest(postRequest, (error, response) => {",
+											"  console.log(error ? error : response.json());",
+											"});",
+											"",
+											"postRequest = {",
+											"  url: 'localhost:8080/api/v1/fresh-products/inboundorder',",
+											"  method: 'POST',",
+											"  header: {",
+											"    'Content-Type': 'application/json',",
+											"    'Manager-Id': '1'",
+											"  },",
+											"  body: {",
+											"    mode: 'raw',",
+											"    raw: JSON.stringify({",
+											"    \"sectionCode\": 1,",
+											"    \"batchStock\": [",
+											"        {",
+											"            \"productId\": 6,",
+											"            \"currentTemperature\": 18.7,",
+											"            \"minimumTemperature\": 10.0,",
+											"            \"initialQuantity\": 121,",
+											"            \"manufacturingDate\": \"25-07-2022\",",
+											"            \"manufacturingTime\": \"25-07-2022 14:23:54\",",
+											"            \"dueDate\": \"25-08-2022\",",
+											"            \"productPrice\": 10.99",
+											"        },",
+											"        {",
+											"            \"productId\": 10,",
+											"            \"currentTemperature\": 18.7,",
+											"            \"minimumTemperature\": 10.0,",
+											"            \"initialQuantity\": 12,",
+											"            \"manufacturingDate\": \"25-07-2022\",",
+											"            \"manufacturingTime\": \"25-07-2022 14:23:54\",",
+											"            \"dueDate\": \"06-09-2022\",",
+											"            \"productPrice\": 7.99",
+											"        }",
+											"    ]",
+											"})",
+											"  }",
+											"};",
+											"pm.sendRequest(postRequest, (error, response) => {",
+											"  console.log(error ? error : response.json());",
+											"});",
+											"",
+											"postRequest = {",
+											"  url: 'localhost:8080/api/v1/fresh-products/inboundorder',",
+											"  method: 'POST',",
+											"  header: {",
+											"    'Content-Type': 'application/json',",
+											"    'Manager-Id': '1'",
+											"  },",
+											"  body: {",
+											"    mode: 'raw',",
+											"    raw: JSON.stringify({",
+											"    \"sectionCode\": 2,",
+											"    \"batchStock\": [",
+											"        {",
+											"            \"productId\": 11,",
+											"            \"currentTemperature\": 18.7,",
+											"            \"minimumTemperature\": 10.0,",
+											"            \"initialQuantity\": 150,",
+											"            \"manufacturingDate\": \"25-07-2022\",",
+											"            \"manufacturingTime\": \"25-07-2022 14:23:54\",",
+											"            \"dueDate\": \"25-08-2022\",",
+											"            \"productPrice\": 1.99",
+											"        },",
+											"        {",
+											"            \"productId\": 12,",
+											"            \"currentTemperature\": 18.7,",
+											"            \"minimumTemperature\": 10.0,",
+											"            \"initialQuantity\": 79,",
+											"            \"manufacturingDate\": \"25-07-2022\",",
+											"            \"manufacturingTime\": \"25-07-2022 14:23:54\",",
+											"            \"dueDate\": \"06-09-2022\",",
+											"            \"productPrice\": 3.99",
+											"        }",
+											"    ]",
+											"})",
+											"  }",
+											"};",
+											"pm.sendRequest(postRequest, (error, response) => {",
+											"  console.log(error ? error : response.json());",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Manager-Id",
+										"value": "1",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{base}}/fresh-products/due-date?sectionCode=3&numberOfDays=30",
+									"host": [
+										"{{base}}"
+									],
+									"path": [
+										"fresh-products",
+										"due-date"
+									],
+									"query": [
+										{
+											"key": "sectionCode",
+											"value": "3"
+										},
+										{
+											"key": "numberOfDays",
+											"value": "30"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get expiring batches by category (order by due date)",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Manager-Id",
+										"value": "1",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{base}}/fresh-products/due-date?category=RF&numberOfDays=30&orderDir=ASC",
+									"host": [
+										"{{base}}"
+									],
+									"path": [
+										"fresh-products",
+										"due-date"
+									],
+									"query": [
+										{
+											"key": "category",
+											"value": "RF"
+										},
+										{
+											"key": "numberOfDays",
+											"value": "30"
+										},
+										{
+											"key": "orderDir",
+											"value": "ASC"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get expiring batches by category (order by due date desc)",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Manager-Id",
+										"value": "1",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{base}}/fresh-products/due-date?category=RF&numberOfDays=30&orderDir=DESC",
+									"host": [
+										"{{base}}"
+									],
+									"path": [
+										"fresh-products",
+										"due-date"
+									],
+									"query": [
+										{
+											"key": "category",
+											"value": "RF"
+										},
+										{
+											"key": "numberOfDays",
+											"value": "30"
+										},
+										{
+											"key": "orderDir",
+											"value": "DESC"
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "US2",
+					"item": [
+						{
+							"name": "Get products",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{base}}/fresh-products",
+									"host": [
+										"{{base}}"
+									],
+									"path": [
+										"fresh-products"
+									],
+									"query": [
+										{
+											"key": "category",
+											"value": "rf",
+											"disabled": true
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get all batches by category",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{base}}/fresh-products?category=RF",
+									"host": [
+										"{{base}}"
+									],
+									"path": [
+										"fresh-products"
+									],
+									"query": [
+										{
+											"key": "category",
+											"value": "RF"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Insert purchase",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Buyer-Id",
+										"value": "1",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"orderStatus\": \"Opened\",\n    \"batch\": {\n        \"batchNumber\": 1,\n        \"quantity\": 2\n    }\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base}}/fresh-products/orders",
+									"host": [
+										"{{base}}"
+									],
+									"path": [
+										"fresh-products",
+										"orders"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get products from purchase (group by batch number)",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Buyer-Id",
+										"value": "1",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{base}}/fresh-products/orders?purchaseOrderId=1",
+									"host": [
+										"{{base}}"
+									],
+									"path": [
+										"fresh-products",
+										"orders"
+									],
+									"query": [
+										{
+											"key": "purchaseOrderId",
+											"value": "1"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Remove product from purchase",
+							"request": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "Buyer-Id",
+										"value": "1",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"batchNumber\": 1\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base}}/fresh-products/orders?purchaseOrderId=1",
+									"host": [
+										"{{base}}"
+									],
+									"path": [
+										"fresh-products",
+										"orders"
+									],
+									"query": [
+										{
+											"key": "purchaseOrderId",
+											"value": "1"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Update purchase (close cart)",
+							"request": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Buyer-Id",
+										"value": "1",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{base}}/fresh-products/orders?purchaseOrderId=1",
+									"host": [
+										"{{base}}"
+									],
+									"path": [
+										"fresh-products",
+										"orders"
+									],
+									"query": [
+										{
+											"key": "purchaseOrderId",
+											"value": "1"
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "Exception tests",
+			"item": [
+				{
+					"name": "InboundOrder with invalid fields",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"sectionCode\": 1,\n    \"batchStock\": [\n        {\n            \"productId\": null,\n            \"currentTemperature\": 18.7,\n            \"minimumTemperature\": 10.0,\n            \"initialQuantity\": 19,\n            \"manufacturingDate\": \"25-07-2022\",\n            \"manufacturingTime\": \"25-07-2022 14:23:54\",\n            \"dueDate\": \"20-08-2024\",\n            \"productPrice\": -10.99\n        }, \n        {   \n            \"batchNumber\": 1,\n            \"productId\": 7,\n            \"currentTemperature\": 18.7,\n            \"minimumTemperature\": 10.0,\n            \"initialQuantity\": 19,\n            \"manufacturingDate\": \"25-07-2022\",\n            \"manufacturingTime\": \"25-07-2022 14:23:54\",\n            \"dueDate\": \"20-08-2024\",\n            \"productPrice\": 10.99\n        }\n    ]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base}}/fresh-products/inboundorder?orderNumber=1",
+							"host": [
+								"{{base}}"
+							],
+							"path": [
+								"fresh-products",
+								"inboundorder"
+							],
+							"query": [
+								{
+									"key": "orderNumber",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "InboundOrder with invalid fields format",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"sectionCode\": 1,\n    \"batchStock\": [\n        {\n            \"productId\": \"a\",\n            \"currentTemperature\": 18.7,\n            \"minimumTemperature\": 10.0,\n            \"initialQuantity\": 19,\n            \"manufacturingDate\": \"25-07-2022\",\n            \"manufacturingTime\": \"25-07-2022 14:23:54\",\n            \"dueDate\": \"20-08-2024\",\n            \"productPrice\": -10.99\n        }, \n        {   \n            \"batchNumber\": 1,\n            \"productId\": 7,\n            \"currentTemperature\": 18.7,\n            \"minimumTemperature\": 10.0,\n            \"initialQuantity\": 19,\n            \"manufacturingDate\": \"25-07-2022\",\n            \"manufacturingTime\": \"25-07-2022 14:23:54\",\n            \"dueDate\": \"20-08-2024\",\n            \"productPrice\": 10.99\n        }\n    ]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base}}/fresh-products/inboundorder?orderNumber=1",
+							"host": [
+								"{{base}}"
+							],
+							"path": [
+								"fresh-products",
+								"inboundorder"
+							],
+							"query": [
+								{
+									"key": "orderNumber",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "InboundOrder with invalid initial quantity",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"sectionCode\": 1,\n    \"batchStock\": [\n        {\n            \"productId\": 7,\n            \"currentTemperature\": 18.7,\n            \"minimumTemperature\": 10.0,\n            \"initialQuantity\": 19,\n            \"manufacturingDate\": \"25-07-2022\",\n            \"manufacturingTime\": \"25-07-2022 14:23:54\",\n            \"dueDate\": \"20-08-2024\",\n            \"productPrice\": 10.99\n        }, \n        {   \n            \"batchNumber\": 1,\n            \"productId\": 7,\n            \"currentTemperature\": 18.7,\n            \"minimumTemperature\": 10.0,\n            \"initialQuantity\": 19,\n            \"manufacturingDate\": \"25-07-2022\",\n            \"manufacturingTime\": \"25-07-2022 14:23:54\",\n            \"dueDate\": \"20-08-2024\",\n            \"productPrice\": 10.99\n        }\n    ]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base}}/fresh-products/inboundorder?orderNumber=1",
+							"host": [
+								"{{base}}"
+							],
+							"path": [
+								"fresh-products",
+								"inboundorder"
+							],
+							"query": [
+								{
+									"key": "orderNumber",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Without ManagerId",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Manager-Id",
+								"value": "1",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"sectionCode\": 4,\n    \"batchStock\": [\n        {\n            \"batchNumber\": 1,\n            \"productId\": 7,\n            \"currentTemperature\": 18.7,\n            \"minimumTemperature\": 10.0,\n            \"initialQuantity\": 4,\n            \"manufacturingDate\": \"25-07-2022\",\n            \"manufacturingTime\": \"25-07-2022 14:23:54\",\n            \"dueDate\": \"20-08-2024\",\n            \"productPrice\": 10.99\n        },\n        {\n            \"batchNumber\": 1002,\n            \"productId\": 8,\n            \"currentTemperature\": 10.1,\n            \"minimumTemperature\": 7.8,\n            \"initialQuantity\": 1001,\n            \"manufacturingDate\": \"25-07-2022\",\n            \"manufacturingTime\": \"25-07-2022 14:23:54\",\n            \"dueDate\": \"20-08-2024\",\n            \"productPrice\": 7.50\n        }\n    ]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base}}/fresh-products/inboundorder",
+							"host": [
+								"{{base}}"
+							],
+							"path": [
+								"fresh-products",
+								"inboundorder"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "With unauthorized manager",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Manager-Id",
+								"value": "1",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"sectionCode\": 4,\n    \"batchStock\": [\n        {\n            \"batchNumber\": 1,\n            \"productId\": 7,\n            \"currentTemperature\": 18.7,\n            \"minimumTemperature\": 10.0,\n            \"initialQuantity\": 4,\n            \"manufacturingDate\": \"25-07-2022\",\n            \"manufacturingTime\": \"25-07-2022 14:23:54\",\n            \"dueDate\": \"20-08-2024\",\n            \"productPrice\": 10.99\n        },\n        {\n            \"batchNumber\": 1002,\n            \"productId\": 8,\n            \"currentTemperature\": 10.1,\n            \"minimumTemperature\": 7.8,\n            \"initialQuantity\": 1001,\n            \"manufacturingDate\": \"25-07-2022\",\n            \"manufacturingTime\": \"25-07-2022 14:23:54\",\n            \"dueDate\": \"20-08-2024\",\n            \"productPrice\": 7.50\n        }\n    ]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base}}/fresh-products/inboundorder",
+							"host": [
+								"{{base}}"
+							],
+							"path": [
+								"fresh-products",
+								"inboundorder"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "With incompatible products",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Manager-Id",
+								"value": "2",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"sectionCode\": 4,\n    \"batchStock\": [\n        {\n            \"batchNumber\": 1,\n            \"productId\": 2,\n            \"currentTemperature\": 18.7,\n            \"minimumTemperature\": 10.0,\n            \"initialQuantity\": 4,\n            \"manufacturingDate\": \"25-07-2022\",\n            \"manufacturingTime\": \"25-07-2022 14:23:54\",\n            \"dueDate\": \"20-08-2024\",\n            \"productPrice\": 10.99\n        },\n        {\n            \"batchNumber\": 1002,\n            \"productId\": 8,\n            \"currentTemperature\": 10.1,\n            \"minimumTemperature\": 7.8,\n            \"initialQuantity\": 1001,\n            \"manufacturingDate\": \"25-07-2022\",\n            \"manufacturingTime\": \"25-07-2022 14:23:54\",\n            \"dueDate\": \"20-08-2024\",\n            \"productPrice\": 7.50\n        },\n        {\n            \"batchNumber\": 1002,\n            \"productId\": 12,\n            \"currentTemperature\": 10.1,\n            \"minimumTemperature\": 7.8,\n            \"initialQuantity\": 1001,\n            \"manufacturingDate\": \"25-07-2022\",\n            \"manufacturingTime\": \"25-07-2022 14:23:54\",\n            \"dueDate\": \"20-08-2024\",\n            \"productPrice\": 7.50\n        }\n    ]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base}}/fresh-products/inboundorder",
+							"host": [
+								"{{base}}"
+							],
+							"path": [
+								"fresh-products",
+								"inboundorder"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get all batches with invalid category",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base}}/fresh-products?category=ab",
+							"host": [
+								"{{base}}"
+							],
+							"path": [
+								"fresh-products"
+							],
+							"query": [
+								{
+									"key": "category",
+									"value": "ab"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get invalid product sum on warehouse",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Manager-Id",
+								"value": "1",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base}}/fresh-products/warehouse?productId=90",
+							"host": [
+								"{{base}}"
+							],
+							"path": [
+								"fresh-products",
+								"warehouse"
+							],
+							"query": [
+								{
+									"key": "productId",
+									"value": "90"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get all batches by product id (empty stock for this manager)",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Manager-Id",
+								"value": "5",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base}}/fresh-products/list?productId=1",
+							"host": [
+								"{{base}}"
+							],
+							"path": [
+								"fresh-products",
+								"list"
+							],
+							"query": [
+								{
+									"key": "productId",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get all batches by product id with invalid order",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Manager-Id",
+								"value": "1",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base}}/fresh-products/list?productId=2&orderBy=ab",
+							"host": [
+								"{{base}}"
+							],
+							"path": [
+								"fresh-products",
+								"list"
+							],
+							"query": [
+								{
+									"key": "productId",
+									"value": "2"
+								},
+								{
+									"key": "orderBy",
+									"value": "ab"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Insert purchase without BuyerId",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Buyer-Id",
+								"value": "1",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"orderStatus\": \"Opened\",\n    \"batch\": {\n        \"batchNumber\": 1,\n        \"quantity\": 2\n    }\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base}}/fresh-products/orders",
+							"host": [
+								"{{base}}"
+							],
+							"path": [
+								"fresh-products",
+								"orders"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Insert purchase with inexistent BuyerId",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Buyer-Id",
+								"value": "500",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"orderStatus\": \"Opened\",\n    \"batch\": {\n        \"batchNumber\": 1,\n        \"quantity\": 2\n    }\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base}}/fresh-products/orders",
+							"host": [
+								"{{base}}"
+							],
+							"path": [
+								"fresh-products",
+								"orders"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update purchase not exists",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Buyer-Id",
+								"value": "1",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base}}/fresh-products/orders?purchaseOrderId=500",
+							"host": [
+								"{{base}}"
+							],
+							"path": [
+								"fresh-products",
+								"orders"
+							],
+							"query": [
+								{
+									"key": "purchaseOrderId",
+									"value": "500"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update purchase already closed",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Buyer-Id",
+								"value": "1",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base}}/fresh-products/orders?purchaseOrderId=1",
+							"host": [
+								"{{base}}"
+							],
+							"path": [
+								"fresh-products",
+								"orders"
+							],
+							"query": [
+								{
+									"key": "purchaseOrderId",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update purchase unauthorized buyer",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Buyer-Id",
+								"value": "2",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base}}/fresh-products/orders?purchaseOrderId=1",
+							"host": [
+								"{{base}}"
+							],
+							"path": [
+								"fresh-products",
+								"orders"
+							],
+							"query": [
+								{
+									"key": "purchaseOrderId",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Remove product from purchase with invalid batch id",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"const postRequest = {",
+									"  url: 'localhost:8080/api/v1/fresh-products/orders',",
+									"  method: 'POST',",
+									"  header: {",
+									"    'Content-Type': 'application/json',",
+									"    'Buyer-Id': '1'",
+									"  },",
+									"  body: {",
+									"    mode: 'raw',",
+									"    raw: JSON.stringify({",
+									"    \"orderStatus\": \"Opened\",",
+									"    \"batch\": {",
+									"        \"batchNumber\": 2,",
+									"        \"quantity\": 2",
+									"    }",
+									"})",
+									"  }",
+									"};",
+									"pm.sendRequest(postRequest, (error, response) => {",
+									"    pm.collectionVariables.set('purchaseOrderId', response.json().purchaseOrderId);",
+									"  console.log(error ? error : response.json());",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Buyer-Id",
+								"value": "1",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"batchNumber\": 100\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base}}/fresh-products/orders?purchaseOrderId={{purchaseOrderId}}",
+							"host": [
+								"{{base}}"
+							],
+							"path": [
+								"fresh-products",
+								"orders"
+							],
+							"query": [
+								{
+									"key": "purchaseOrderId",
+									"value": "{{purchaseOrderId}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Remove product from purchase that not exists",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Buyer-Id",
+								"value": "1",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"batchNumber\": 1\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base}}/fresh-products/orders?purchaseOrderId=500",
+							"host": [
+								"{{base}}"
+							],
+							"path": [
+								"fresh-products",
+								"orders"
+							],
+							"query": [
+								{
+									"key": "purchaseOrderId",
+									"value": "500"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Remove product from purchase already closed",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									" const postRequest = {",
+									"  url: 'localhost:8080/api/v1/fresh-products/orders?purchaseOrderId=1',",
+									"  method: 'PUT',",
+									"  header: {",
+									"    'Content-Type': 'application/json',",
+									"    'Buyer-Id': '1'",
+									"  }",
+									"};",
+									"pm.sendRequest(postRequest, (error, response) => {",
+									"  console.log(error ? error : response.json());",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Buyer-Id",
+								"value": "1",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"batchNumber\": 1\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base}}/fresh-products/orders?purchaseOrderId=1",
+							"host": [
+								"{{base}}"
+							],
+							"path": [
+								"fresh-products",
+								"orders"
+							],
+							"query": [
+								{
+									"key": "purchaseOrderId",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Remove product from purchase with unauthorized buyer",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Buyer-Id",
+								"value": "2",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"batchNumber\": 1\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base}}/fresh-products/orders?purchaseOrderId=1",
+							"host": [
+								"{{base}}"
+							],
+							"path": [
+								"fresh-products",
+								"orders"
+							],
+							"query": [
+								{
+									"key": "purchaseOrderId",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Remove product from purchase when product is not in purchase",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"const postRequest = {",
+									"  url: 'localhost:8080/api/v1/fresh-products/orders',",
+									"  method: 'POST',",
+									"  header: {",
+									"    'Content-Type': 'application/json',",
+									"    'Buyer-Id': '1'",
+									"  },",
+									"  body: {",
+									"    mode: 'raw',",
+									"    raw: JSON.stringify({",
+									"    \"orderStatus\": \"Opened\",",
+									"    \"batch\": {",
+									"        \"batchNumber\": 2,",
+									"        \"quantity\": 2",
+									"    }",
+									"})",
+									"  }",
+									"};",
+									"pm.sendRequest(postRequest, (error, response) => {",
+									"    pm.collectionVariables.set('purchaseOrderId', response.json().purchaseOrderId);",
+									"  console.log(error ? error : response.json());",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Buyer-Id",
+								"value": "1",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"batchNumber\": 3\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base}}/fresh-products/orders?purchaseOrderId={{purchaseOrderId}}",
+							"host": [
+								"{{base}}"
+							],
+							"path": [
+								"fresh-products",
+								"orders"
+							],
+							"query": [
+								{
+									"key": "purchaseOrderId",
+									"value": "{{purchaseOrderId}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get products from purchase with invalid buyer",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Buyer-Id",
+								"value": "3",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base}}/fresh-products/orders?purchaseOrderId=1",
+							"host": [
+								"{{base}}"
+							],
+							"path": [
+								"fresh-products",
+								"orders"
+							],
+							"query": [
+								{
+									"key": "purchaseOrderId",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get products from purchase when buyer not exists",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Buyer-Id",
+								"value": "500",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base}}/fresh-products/orders?purchaseOrderId=1",
+							"host": [
+								"{{base}}"
+							],
+							"path": [
+								"fresh-products",
+								"orders"
+							],
+							"query": [
+								{
+									"key": "purchaseOrderId",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "base",
+			"value": "http://localhost:8080/api/v1"
+		},
+		{
+			"key": "donationBatch",
+			"value": ""
+		},
+		{
+			"key": "batchNumber",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "purchaseOrderId",
+			"value": "",
+			"type": "string"
+		}
+	]
+}

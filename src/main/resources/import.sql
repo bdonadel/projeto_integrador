@@ -9,9 +9,9 @@ insert into manager values (null, 'brunav@example.com', 'Bruna', 'Vottri');
 insert into manager values (null, 'felipe@example.com', 'Felipe', 'Ticiane');
 insert into manager values (null, 'viviane@example.com', 'Viviane', 'de Freitas');
 
-insert into section values (null, 'FROZEN', 0, 10, 1, 1);
-insert into section values (null, 'FRESH', 0, 10, 1, 1);
-insert into section values (null, 'CHILLED', 0, 10, 1, 1);
+insert into section values (null, 'FROZEN', 0, 500, 1, 1);
+insert into section values (null, 'FRESH', 0, 500, 1, 1);
+insert into section values (null, 'CHILLED', 0, 500, 1, 1);
 
 insert into section values (null, 'FROZEN', 0, 20, 2, 2);
 insert into section values (null, 'FRESH', 0, 5, 2, 2);
